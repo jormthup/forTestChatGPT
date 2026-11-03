@@ -1,0 +1,4 @@
+export const money=n=>new Intl.NumberFormat('th-TH',{style:'currency',currency:'THB'}).format(n);
+export function totals(cart,discount=0,tax=0){const subtotal=Math.round(cart.reduce((s,x)=>s+x.price*x.qty,0)*100)/100;const reduction=Math.min(subtotal,Math.max(0,Number(discount)||0));const net=subtotal-reduction;const vat=Math.round(net*tax/100*100)/100;return {subtotal,discount:reduction,vat,total:Math.round((net+vat)*100)/100};}
+export function canSell(cart,products){const required={};for(const item of cart)required[item.id]=(required[item.id]||0)+item.qty;return Object.entries(required).every(([id,qty])=>{const p=products.find(p=>p.id===id);return p&&p.stock>=qty;});}
+export function thaiDay(date){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(date));}
